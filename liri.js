@@ -53,6 +53,12 @@ function doWhat(command) {
 }
 
 function spotifyThis(command, query, limit, empty) {
+    //Saves each command to log.txt
+    fs.appendFile("log.txt", `${command}, `, function (err) {
+        if (err) return console.log(err);
+    });
+
+    //If the query is empty, it will show 1 song: Shelter by Porter Robinson
     if (empty) {
         spotify.search({ type: 'track', query: query, limit: limit })
             .then(function (response) {
@@ -71,7 +77,8 @@ function spotifyThis(command, query, limit, empty) {
             });
     }
     else {
-        fs.appendFile("log.txt", `${command}, `, function (err) {
+        //Saves each song to random.txt
+        fs.appendFile("random.txt", `, "${query}"`, function (err) {
             if (err) return console.log(err);
         });
         spotify.search({ type: 'track', query: query, limit: limit })
@@ -119,9 +126,6 @@ if (command === "spotify-this-song") {
     var querySong = queryArr.join(' ');
     var limit = 20;
     var empty = false;
-    fs.appendFile("random.txt", `, "${querySong}"`, function (err) {
-        if (err) return console.log(err);
-    });
     if (queryArr.length === 0) {
         querySong = "shelter"
         limit = 2;
