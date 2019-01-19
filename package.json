@@ -1,0 +1,28 @@
+{
+  "name": "Liri-Node-App",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/helloimdavidhaha/Liri-Node-App.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/helloimdavidhaha/Liri-Node-App/issues"
+  },
+  "homepage": "https://github.com/helloimdavidhaha/Liri-Node-App#readme",
+  "dependencies": {
+    "dotenv": "^6.2.0",
+    "inquirer": "^6.2.1",
+    "moment": "^2.23.0",
+    "node-spotify-api": "^1.0.7",
+    "pornsearch": "^2.4.3",
+    "request": "^2.88.0"
+  }
+}
