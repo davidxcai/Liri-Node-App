@@ -16,7 +16,7 @@ for (var i = 3; i < query.length; i++) {
 
 //Checks if log.txt exists, if it doesn't, create a new log.txt file
 if (fs.existsSync("./log.txt")) {
-    console.log("log.txt exists");
+    console.log("Liri is thinking...");
 }
 else {
     fs.writeFile("log.txt", "", function (err) {
@@ -41,13 +41,16 @@ function doWhat(command) {
         //Removes index 0 from the data
         var action = data.shift();
 
+        //Removes duplicates from array
+        let uniqueData = [...new Set(data)];
+
         //Generates a random number from remaining indexes
-        var i = Math.floor(Math.random() * data.length);
+        var i = Math.floor(Math.random() * uniqueData.length);
 
         //Searches random song from random.txt
         if (action === "spotify-this-song") {
-            spotifyThis(action, data[i], 20);
-            console.log('Random song is: ' + data[i]);
+            spotifyThis(action, uniqueData[i], 20);
+            console.log(`Ok, I picked ${uniqueData[i]}.`);
         }
     });
 }
@@ -77,13 +80,11 @@ function spotifyThis(command, query, limit, empty) {
             });
     }
     else {
-        //Saves each song to random.txt
-        fs.appendFile("random.txt", `, "${query}"`, function (err) {
-            if (err) return console.log(err);
-        });
         spotify.search({ type: 'track', query: query, limit: limit })
             .then(function (response) {
                 var song = response.tracks.items;
+                console.log("\n ");
+                console.log(`Ok, I found ${limit} results for "${query}".`);
                 console.log('\n=========================================\n');
                 song.forEach(function (track) {
                     console.log(`Artist: \t${track.artists[0].name}`);
@@ -92,7 +93,6 @@ function spotifyThis(command, query, limit, empty) {
                     console.log(`Album: \t\t${track.album.name}`);
                     console.log('\n=========================================\n');
                 })
-
             })
             .catch(function (err) {
                 console.log(err);
@@ -130,8 +130,16 @@ if (command === "spotify-this-song") {
         querySong = "shelter"
         limit = 2;
         empty = true;
+        spotifyThis(command, querySong, limit, empty);
     }
-    spotifyThis(command, querySong, limit, empty);
+    else {
+        //Saves each song to random.txt
+        fs.appendFile("random.txt", `, "${querySong}"`, function (err) {
+            if (err) return console.log(err);
+        });
+        spotifyThis(command, querySong, limit, empty);
+    }
+
 }
 
 //OMDB search============================================================
@@ -141,7 +149,7 @@ else if (command === "movie-this") {
     if (queryArr.length === 0) {
         url = `http://www.omdbapi.com/?apikey=trilogy&t=the+room`;
         console.log('\n=========================================\n');
-        console.log("Watch this movie if you haven't. Please.");
+        console.log("You didn't pick a movie so I picked one for you <3");
     }
     movieThis(command, url);
 }
@@ -152,8 +160,36 @@ else if (command === "do-what-it-says") {
     doWhat(command);
 }
 
-else if (command === "jerk-to-this") {
-    var pornsearch = require('pornsearch').search(queryArr.join(' '));
+else if (command === "jerk-to-this" || command === "fap-to") {
+    var video = queryArr.join(' ');
+    searchIt(video);
+}
+
+else if (command === "clear-log") {
+    fs.writeFile("log.txt", '', function(err) {
+        if (err) return console.log(err);
+        console.log('\n=========================================\n');
+        console.log("Log history succesfully cleared. Is there anything else I can do for you?");
+        console.log('\n=========================================\n');
+    })
+}
+
+else if (command === "reset-random") {
+    fs.writeFile("random.txt", `spotify-this-song, "I Want it That Way"`, function(err) {
+        if (err) return console.log(err);
+        console.log('\n=========================================\n');
+        console.log("Random.txt succesfully reset. Is there anything else I can do for you?");
+        console.log('\n=========================================\n');
+    })
+}
+
+else {
+    console.log("Error, unable to search.");
+}
+
+function searchIt(video, browser) {
+    var pornsearch = require('pornsearch').search(video);
+    console.log(`I found these results for ${video}.`);
     console.log('\n=========================================\n');
     pornsearch.videos()
         .then(videos =>
@@ -164,8 +200,5 @@ else if (command === "jerk-to-this") {
                 console.log('\n=========================================\n');
             })
         );
-}
-
-else {
-    console.log("Error, unable to search.");
+    
 }
