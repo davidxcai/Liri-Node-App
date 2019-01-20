@@ -137,13 +137,6 @@ else if (command === "do-what-it-says" || command === "random") {
     doWhat(command);
 }
 
-else if (command === "jerk-to-this" || command === "fap-to") {
-    if (!query) {
-        query = "kirara asuka";
-    }
-    searchIt(query);
-}
-
 else if (command === "clear-log") {
     inquirer.prompt({
         name: "confirm",
@@ -184,19 +177,4 @@ else if (command === "reset-random") {
 
 else {
     console.log("\nError, unable to search.");
-}
-
-function searchIt(video) {
-    var pornsearch = require('pornsearch').search(video);
-    console.log(`\nI found these results for ${video}.`),
-    console.log(divider),
-    pornsearch.videos()
-        .then(videos =>
-            videos.forEach(function (video) {
-                console.log(`Title: \t\t${video.title}`);
-                console.log(`URL: \t\t${video.url}`);
-                console.log(`Duration: \t${video.duration}`);
-                console.log(divider);
-            })
-        );
 }
