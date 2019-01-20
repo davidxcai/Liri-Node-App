@@ -1,6 +1,6 @@
 # Liri-Node-App
 
-[Demo Video](https://www.youtube.com/watch?v=GuqOw0KKHaM)
+[Demo Video](https://www.youtube.com/watch?v=Xbvpcxv4eaw)
 
 This is an application used in node.js utilizing Spotify and OMDB APIs to search for content.
 
